@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consells d'Energia per l'Avi ☀️</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .big-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .advice-card {
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+        .advice-card.good {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+        .advice-card.wait {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+        .advice-card.expensive {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+        }
+        .time-slot {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .time-slot.best {
+            background: #22c55e;
+            color: white;
+            border-color: #16a34a;
+        }
+        .time-slot.ok {
+            background: #f59e0b;
+            color: white;
+            border-color: #d97706;
+        }
+        .time-slot.avoid {
+            background: #ef4444;
+            color: white;
+            border-color: #dc2626;
+        }
+        .weather-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid #3b82f6;
+        }
+        .appliance-tip {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        .hidden-tech {
+            display: none;
+        }
+        .show-tech .hidden-tech {
+            display: block;
+        }
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            background: #1f2937;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            z-index: 100;
+            top: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6 max-w-4xl">
+        <!-- Capçalera principal -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">☀️ Hola Avi!</h1>
+            <p class="text-xl text-gray-600">Els teus consells d'energia per avui</p>
+        </div>
+
+        <!-- Consell principal del moment -->
+        <div class="mb-8">
+            <div id="main-advice" class="advice-card good rounded-lg p-6 text-center">
+                <div class="text-6xl mb-4">🟢</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4" id="main-advice-text">
+                    Ara pots posar la rentadora
+                </h2>
+                <p class="text-lg text-gray-600" id="main-advice-reason">
+                    Les plaques solars estan fent molta energia!
+                </p>
+            </div>
+        </div>
+
+        <!-- Informació del temps -->
+        <div class="weather-info rounded-lg p-6 mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <div class="text-4xl mr-4">🌤️</div>
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-800">Temps d'avui</h3>
+                    <p class="text-lg text-blue-700" id="weather-summary">Sol i núvols - Bon dia per les plaques!</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-4">
+                <p class="text-lg text-center font-medium" id="weather-advice">
+                    Demà farà més sol! Ideal per deixar la bugada per demà 🌞
+                </p>
+            </div>
+        </div>
+
+        <!-- Millors hores per cada cosa -->
+        <div class="bg-white rounded-lg shadow-md mb-8">
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    ⏰ Quan fer cada cosa avui
+                </h3>
+                
+                <div class="space-y-4">
+                    <!-- Cuinar -->
+                    <div class="appliance-tip">
+                        <div class="flex items-center mb-2">
+                            <span class="text-2xl mr-3">🍳</span>
+                            <h4 class="text-xl font-semibold">Cuinar (forn, vitroceràmica)</h4>
+                        </div>
+                        <div id="cooking-advice" class="big-text text-green-600">
+                            Millor entre les 12h i les 15h
+                        </div>
+                        <p class="text-gray-600 mt-2 tooltip" data-tooltip="El forn gasta com 30 bombetes enceses alhora">
+                            Quan hi ha més sol ☀️
+                        </p>
+                    </div>
+
+                    <!-- Rentadora -->
+                    <div class="appliance-tip">
+                        <div class="flex items-center mb-2">
+                            <span class="text-2xl mr-3">🧺</span>
+                            <h4 class="text-xl font-semibold">Rentadora</h4>
+                        </div>
+                        <div id="washing-advice" class="big-text text-green-600">
+                            Ara és bon moment!
+                        </div>
+                        <p class="text-gray-600 mt-2 tooltip" data-tooltip="La rentadora gasta com 20 bombetes enceses alhora">
+                            Aprofita l'energia del sol
+                        </p>
+                    </div>
+
+                    <!-- Rentavaixelles -->
+                    <div class="appliance-tip">
+                        <div class="flex items-center mb-2">
+                            <span class="text-2xl mr-3">🍽️</span>
+                            <h4 class="text-xl font-semibold">Rentavaixelles</h4>
+                        </div>
+                        <div id="dishwasher-advice" class="big-text text-yellow-600">
+                            Millor a les 13h després de dinar
+                        </div>
+                        <p class="text-gray-600 mt-2 tooltip" data-tooltip="El rentavaixelles gasta com 15 bombetes enceses alhora">
+                            Quan hi ha més energia solar
+                        </p>
+                    </div>
+
+                    <!-- Planxa -->
+                    <div class="appliance-tip">
+                        <div class="flex items-center mb-2">
+                            <span class="text-2xl mr-3">👔</span>
+                            <h4 class="text-xl font-semibold">Planxar</h4>
+                        </div>
+                        <div id="ironing-advice" class="big-text text-green-600">
+                            Perfecte entre les 11h i les 16h
+                        </div>
+                        <p class="text-gray-600 mt-2 tooltip" data-tooltip="La planxa gasta com 25 bombetes enceses alhora">
+                            Energia solar gratuïta
+                        </p>
+                    </div>
+
+                    <!-- Aire condicionat -->
+                    <div class="appliance-tip">
+                        <div class="flex items-center mb-2">
+                            <span class="text-2xl mr-3">❄️</span>
+                            <h4 class="text-xl font-semibold">Aire condicionat</h4>
+                        </div>
+                        <div id="ac-advice" class="big-text text-yellow-600">
+                            Si cal, millor a les 14h
+                        </div>
+                        <p class="text-gray-600 mt-2 tooltip" data-tooltip="L'aire condicionat gasta com 50 bombetes enceses alhora">
+                            Quan tenim més energia solar
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hores del dia -->
+        <div class="bg-white rounded-lg shadow-md mb-8">
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    🕐 Com està el dia d'avui
+                </h3>
+                
+                <div class="space-y-3" id="daily-schedule">
+                    <div class="time-slot avoid">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold">6h - 9h (Matí)</span>
+                            <span class="text-2xl">🔴</span>
+                        </div>
+                        <p class="text-sm mt-1">Poc sol - Millor esperar per aparells grans</p>
+                    </div>
+
+                    <div class="time-slot ok">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold">9h - 12h (Matí)</span>
+                            <span class="text-2xl">🟡</span>
+                        </div>
+                        <p class="text-sm mt-1">El sol comença - Bé per rentadora</p>
+                    </div>
+
+                    <div class="time-slot best">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold">12h - 15h (Migdia)</span>
+                            <span class="text-2xl">🟢</span>
+                        </div>
+                        <p class="text-sm mt-1">Molt sol - Ideal per tot!</p>
+                    </div>
+
+                    <div class="time-slot ok">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold">15h - 18h (Tarda)</span>
+                            <span class="text-2xl">🟡</span>
+                        </div>
+                        <p class="text-sm mt-1">Encara bon sol - Aprofita!</p>
+                    </div>
+
+                    <div class="time-slot avoid">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold">18h - 22h (Vespre)</span>
+                            <span class="text-2xl">🔴</span>
+                        </div>
+                        <p class="text-sm mt-1">Sense sol - Millor només el necessari</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Planificació de demà -->
+        <div class="bg-white rounded-lg shadow-md mb-8">
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    📅 Planifica demà
+                </h3>
+                
+                <div class="bg-green-50 border-2 border-green-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-3">🌞</span>
+                        <h4 class="text-xl font-semibold text-green-800">Demà farà molt sol!</h4>
+                    </div>
+                    <p class="text-green-700 text-lg">
+                        Dia perfecte per la bugada i fer servir tots els aparells
+                    </p>
+                </div>
+
+                <div class="space-y-3" id="tomorrow-tips">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl mr-3">🧺</span>
+                        <div>
+                            <p class="font-semibold">Demà és dia de bugada!</p>
+                            <p class="text-sm text-gray-600">La rentadora amb energia solar gratuïta</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl mr-3">🍳</span>
+                        <div>
+                            <p class="font-semibold">Cuina tranquil a migdia</p>
+                            <p class="text-sm text-gray-600">El forn no costarà diners</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl mr-3">👔</span>
+                        <div>
+                            <p class="font-semibold">Bon dia per planxar</p>
+                            <p class="text-sm text-gray-600">Energia solar tota la tarda</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botó per veure dades tècniques (amagat per defecte) -->
+        <div class="text-center mb-8">
+            <button onclick="toggleTechnicalData()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg text-lg font-medium">
+                🔧 Veure dades tècniques
+            </button>
+        </div>
+
+        <!-- Dades tècniques (amagades per defecte) -->
+        <div id="technical-data" class="hidden-tech">
+            <div class="bg-white rounded-lg shadow-md mb-8 border-2 border-gray-300">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                        📊 Dades tècniques
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <!-- Producció solar -->
+                        <div class="bg-blue-50 p-4 rounded-lg text-center">
+                            <h4 class="text-lg font-medium text-blue-600">☀️ Producció solar</h4>
+                            <p class="text-3xl font-bold text-blue-800" id="p-pv">0,00 kW</p>
+                        </div>
+                        
+                        <!-- Consum casa -->
+                        <div class="bg-green-50 p-4 rounded-lg text-center">
+                            <h4 class="text-lg font-medium text-green-600">🏠 Consum casa</h4>
+                            <p class="text-3xl font-bold text-green-800" id="p-load">0,00 kW</p>
+                        </div>
+                        
+                        <!-- Xarxa -->
+                        <div class="bg-purple-50 p-4 rounded-lg text-center">
+                            <h4 class="text-lg font-medium text-purple-600">⚡ Xarxa</h4>
+                            <p class="text-3xl font-bold text-purple-800" id="p-grid">0,00 kW</p>
+                        </div>
+                    </div>
+
+                    <!-- Indicador de mode -->
+                    <div class="text-center mb-4">
+                        <div id="real-data-badge" class="hidden inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                            ✅ Dades reals del inversor
+                        </div>
+                        <div id="mock-data-badge" class="hidden inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                            🔧 Dades simulades per demo
+                        </div>
+                    </div>
+
+                    <!-- Controls de demo -->
+                    <div id="demo-controls" class="hidden mt-4 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="text-lg font-medium mb-3">Controls de demo</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <button onclick="testScenario('excess_solar')" class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600">Excés solar</button>
+                                <button onclick="testScenario('balanced')" class="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Equilibrat</button>
+                                <button onclick="testScenario('high_consumption')" class="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600">Alt consum</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Peu de pàgina -->
+        <div class="text-center text-gray-500 mt-8">
+            <p>Fet amb ❤️ per l'avi • Actualitzat cada 5 segons</p>
+        </div>
+    </div>
+
+    <script>
+        let isRealData = false;
+        let showTechnical = false;
+
+        // Funcions per mostrar/amagar dades tècniques
+        function toggleTechnicalData() {
+            showTechnical = !showTechnical;
+            const technicalData = document.getElementById('technical-data');
+            const button = document.querySelector('button[onclick="toggleTechnicalData()"]');
+            
+            if (showTechnical) {
+                technicalData.classList.remove('hidden-tech');
+                button.textContent = '🔧 Amagar dades tècniques';
+            } else {
+                technicalData.classList.add('hidden-tech');
+                button.textContent = '🔧 Veure dades tècniques';
+            }
+        }
+
+        // Funcions per actualitzar consells basats en dades
+        function updateAdviceBasedOnData(data) {
+            const mainAdvice = document.getElementById('main-advice');
+            const mainAdviceText = document.getElementById('main-advice-text');
+            const mainAdviceReason = document.getElementById('main-advice-reason');
+            
+            const solarProduction = data.p_pv || 0;
+            const consumption = data.p_load || 0;
+            const grid = data.p_grid || 0;
+            
+            // Determinar situació energètica
+            const surplus = solarProduction - consumption;
+            
+            if (surplus > 1.0) {
+                // Excés d'energia solar
+                mainAdvice.className = 'advice-card good rounded-lg p-6 text-center';
+                mainAdviceText.textContent = 'Ara pots posar la rentadora!';
+                mainAdviceReason.textContent = 'Les plaques solars estan fent molta energia gratuïta';
+                updateApplianceAdvice('excellent');
+            } else if (surplus > 0.2) {
+                // Energia solar suficient
+                mainAdvice.className = 'advice-card good rounded-lg p-6 text-center';
+                mainAdviceText.textContent = 'Bon moment per aparells petits';
+                mainAdviceReason.textContent = 'Energia solar disponible';
+                updateApplianceAdvice('good');
+            } else if (surplus > -0.5) {
+                // Equilibrat
+                mainAdvice.className = 'advice-card wait rounded-lg p-6 text-center';
+                mainAdviceText.textContent = 'Millor esperar una mica';
+                mainAdviceReason.textContent = 'Poca energia solar ara mateix';
+                updateApplianceAdvice('wait');
+            } else {
+                // Molta compra de xarxa
+                mainAdvice.className = 'advice-card expensive rounded-lg p-6 text-center';
+                mainAdviceText.textContent = 'Millor no usar aparells grans';
+                mainAdviceReason.textContent = 'Estem comprant energia cara de la xarxa';
+                updateApplianceAdvice('avoid');
+            }
+        }
+
+        function updateApplianceAdvice(situation) {
+            const cookingAdvice = document.getElementById('cooking-advice');
+            const washingAdvice = document.getElementById('washing-advice');
+            const dishwasherAdvice = document.getElementById('dishwasher-advice');
+            const ironingAdvice = document.getElementById('ironing-advice');
+            const acAdvice = document.getElementById('ac-advice');
+            
+            switch(situation) {
+                case 'excellent':
+                    cookingAdvice.textContent = 'Perfecte! Cuina tranquil';
+                    cookingAdvice.className = 'big-text text-green-600';
+                    washingAdvice.textContent = 'Ara és el millor moment!';
+                    washingAdvice.className = 'big-text text-green-600';
+                    dishwasherAdvice.textContent = 'Perfecte per després de dinar';
+                    dishwasherAdvice.className = 'big-text text-green-600';
+                    ironingAdvice.textContent = 'Energia solar gratuïta!';
+                    ironingAdvice.className = 'big-text text-green-600';
+                    acAdvice.textContent = 'Si cal, ara és el moment';
+                    acAdvice.className = 'big-text text-green-600';
+                    break;
+                case 'good':
+                    cookingAdvice.textContent = 'Bé per cuinar';
+                    cookingAdvice.className = 'big-text text-green-600';
+                    washingAdvice.textContent = 'Bon moment!';
+                    washingAdvice.className = 'big-text text-green-600';
+                    dishwasherAdvice.textContent = 'Aprofita després de dinar';
+                    dishwasherAdvice.className = 'big-text text-yellow-600';
+                    ironingAdvice.textContent = 'Bé per planxar';
+                    ironingAdvice.className = 'big-text text-green-600';
+                    acAdvice.textContent = 'Millor esperar una mica';
+                    acAdvice.className = 'big-text text-yellow-600';
+                    break;
+                case 'wait':
+                    cookingAdvice.textContent = 'Millor esperar al migdia';
+                    cookingAdvice.className = 'big-text text-yellow-600';
+                    washingAdvice.textContent = 'Espera una mica més';
+                    washingAdvice.className = 'big-text text-yellow-600';
+                    dishwasherAdvice.textContent = 'Millor a les 13h';
+                    dishwasherAdvice.className = 'big-text text-yellow-600';
+                    ironingAdvice.textContent = 'Espera millor moment';
+                    ironingAdvice.className = 'big-text text-yellow-600';
+                    acAdvice.textContent = 'Millor no usar-lo ara';
+                    acAdvice.className = 'big-text text-red-600';
+                    break;
+                case 'avoid':
+                    cookingAdvice.textContent = 'Evita forn i vitroceràmica';
+                    cookingAdvice.className = 'big-text text-red-600';
+                    washingAdvice.textContent = 'Millor esperar';
+                    washingAdvice.className = 'big-text text-red-600';
+                    dishwasherAdvice.textContent = 'Millor demà';
+                    dishwasherAdvice.className = 'big-text text-red-600';
+                    ironingAdvice.textContent = 'Millor no planxar ara';
+                    ironingAdvice.className = 'big-text text-red-600';
+                    acAdvice.textContent = 'Evita ara, costa diners';
+                    acAdvice.className = 'big-text text-red-600';
+                    break;
+            }
+        }
+
+        // Funcions per mode demo
+        function testScenario(scenario) {
+            fetch('/api/mock/test-scenario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({scenario: scenario})
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Escenari aplicat:', scenario);
+                // Actualitzar immediatament
+                setTimeout(updateData, 1000);
+            });
+        }
+
+        // Actualitzar dades periòdicament
+        function updateData() {
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    isRealData = data.source === 'real';
+                    
+                    // Actualitzar badges
+                    const realBadge = document.getElementById('real-data-badge');
+                    const mockBadge = document.getElementById('mock-data-badge');
+                    const demoControls = document.getElementById('demo-controls');
+                    
+                    if (isRealData) {
+                        realBadge.classList.remove('hidden');
+                        mockBadge.classList.add('hidden');
+                        demoControls.classList.add('hidden');
+                    } else {
+                        realBadge.classList.add('hidden');
+                        mockBadge.classList.remove('hidden');
+                        demoControls.classList.remove('hidden');
+                    }
+                    
+                    // Actualitzar dades tècniques
+                    document.getElementById('p-pv').textContent = `${data.p_pv?.toFixed(2) || '0.00'} kW`;
+                    document.getElementById('p-load').textContent = `${data.p_load?.toFixed(2) || '0.00'} kW`;
+                    document.getElementById('p-grid').textContent = `${data.p_grid?.toFixed(2) || '0.00'} kW`;
+                    
+                    // Actualitzar consells principals
+                    updateAdviceBasedOnData(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Actualitzar dades meteorològiques
+        function updateWeatherData() {
+            fetch('/api/elderly/advice')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.weather_advice) {
+                        document.getElementById('weather-advice').textContent = data.weather_advice;
+                    }
+                    if (data.weather_summary) {
+                        document.getElementById('weather-summary').textContent = data.weather_summary;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error weather:', error);
+                });
+        }
+
+        // Inicialitzar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateData();
+            updateWeatherData();
+            
+            // Actualitzar cada 5 segons
+            setInterval(updateData, 5000);
+            // Actualitzar temps cada 30 minuts
+            setInterval(updateWeatherData, 30 * 60 * 1000);
+        });
+    </script>
+</body>
+</html> 
+
