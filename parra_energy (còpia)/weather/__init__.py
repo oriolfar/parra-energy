@@ -1,1 +1,0 @@
-# Weather module for solar energy optimization 

@@ -30,7 +30,7 @@ class EnergyInsight:
 
 
 class EnergyOptimizer:
-    def __init__(self, db_path: str = 'energy_data.db'):
+    def __init__(self, db_path: str = 'data/energy_data.db'):
         """Initialize the energy optimizer with database path."""
         self.db_path = db_path
         self.weather_service = WeatherService(db_path)
@@ -481,7 +481,7 @@ class EnergyOptimizer:
             if not excellent_days.empty:
                 best_day = excellent_days.iloc[0]['date']
                 tips.append(EnergyInsight(
-                    tip=f"🌞 Dia excel·lent per la solar demà ({best_day})! Programeu la rentadora, assecadora i aparells grans per aprofitar la producció màxima.",
+                    tip=f"🌞 Dia excel·lent per la solar demà ({best_day})! Programeu la rentadora, assecadora i aparells grans per充分利用生产高峰。",
                     priority='high',
                     potential_savings=8.0,
                     category='timing'

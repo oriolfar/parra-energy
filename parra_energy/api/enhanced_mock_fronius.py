@@ -27,7 +27,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 
 
 class EnhancedMockFroniusClient:
-    def __init__(self, host: str = "mock", port: int = 80, db_path: str = "parra_energy/data/energy_data.db"):
+    def __init__(self, host: str = "mock", port: int = 80, db_path: str = "data/energy_data.db"):
         """Initialize the enhanced mock Fronius API client.
         
         Args:

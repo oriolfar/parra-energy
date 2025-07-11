@@ -8,7 +8,7 @@ import sqlite3
 import os
 
 class WeatherService:
-    def __init__(self, db_path="parra_energy/data/energy_data.db"):
+    def __init__(self, db_path="data/energy_data.db"):
         """Initialize weather service with coordinates for Agramunt, Spain"""
         # Setup the Open-Meteo API client with cache and retry on error
         cache_session = requests_cache.CachedSession('.cache', expire_after=3600)

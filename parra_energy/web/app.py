@@ -16,7 +16,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session
 from parra_energy.api.smart_fronius import SmartFroniusClient
 from parra_energy.automations.manager import AutomationManager
 from parra_energy.analytics.optimizer import EnergyOptimizer
@@ -32,7 +32,7 @@ app = Flask(__name__)
 # Initialize system components  
 fronius = SmartFroniusClient(host="192.168.1.128")  # Smart client that auto-detects real vs mock
 automation_manager = AutomationManager()
-energy_optimizer = EnergyOptimizer('parra_energy/data/energy_data.db')
+energy_optimizer = EnergyOptimizer('data/energy_data.db')
 
 # --- Background fetcher thread for 5s polling and 5min averaging ---
 def background_fetcher():
@@ -50,7 +50,7 @@ def background_fetcher():
                 avg_cons = sum(x['consumption'] for x in local_buffer) / len(local_buffer)
                 ts = datetime.now().replace(second=0, microsecond=0, minute=(datetime.now().minute // 5) * 5)
                 print(f"[AVERAGE] {ts.isoformat()} - Avg Production: {avg_prod}, Avg Consumption: {avg_cons}")
-                conn = sqlite3.connect('energy_data.db')
+                conn = sqlite3.connect('data/energy_data.db')
                 c = conn.cursor()
                 c.execute('INSERT OR REPLACE INTO energy (timestamp, production, consumption) VALUES (?, ?, ?)',
                           (ts.isoformat(), avg_prod, avg_cons))
@@ -70,12 +70,11 @@ atexit.register(lambda: fetcher_thread.join(timeout=1))
 
 @app.route('/')
 def index():
-    """Render the main dashboard page.
-    
-    Returns:
-        The rendered index.html template
-    """
-    return render_template('index.html')
+    mode = session.get('dashboard_mode', 'technical')
+    if mode == 'elderly':
+        return render_template('elderly.html')
+    else:
+        return render_template('technical.html')
 
 @app.route('/api/status')
 def get_status():
@@ -106,7 +105,7 @@ def get_status():
 
 @app.route('/debug/all')
 def debug_all():
-    db = sqlite3.connect('energy_data.db')
+    db = sqlite3.connect('data/energy_data.db')
     db.row_factory = sqlite3.Row
     rows = db.execute('SELECT * FROM energy ORDER BY timestamp').fetchall()
     return jsonify([dict(row) for row in rows])
@@ -117,7 +116,7 @@ def history(date):
         day = datetime.strptime(date, '%Y-%m-%d')
     except ValueError:
         return "Invalid date", 400
-    db = sqlite3.connect('energy_data.db')
+    db = sqlite3.connect('data/energy_data.db')
     db.row_factory = sqlite3.Row
     start = day.replace(hour=0, minute=0, second=0, microsecond=0)
     end = start + timedelta(days=1)
@@ -157,7 +156,7 @@ def history5min(date):
         day = datetime.strptime(date, '%Y-%m-%d')
     except ValueError:
         return "Invalid date", 400
-    db = sqlite3.connect('energy_data.db')
+    db = sqlite3.connect('data/energy_data.db')
     db.row_factory = sqlite3.Row
     start = day.replace(hour=0, minute=0, second=0, microsecond=0)
     end = start + timedelta(days=1)
@@ -186,7 +185,7 @@ def export_csv(date):
         day = datetime.strptime(date, '%Y-%m-%d')
     except ValueError:
         return "Invalid date", 400
-    db = sqlite3.connect('energy_data.db')
+    db = sqlite3.connect('data/energy_data.db')
     db.row_factory = sqlite3.Row
     start = day.replace(hour=0, minute=0, second=0, microsecond=0)
     end = start + timedelta(days=1)
@@ -458,7 +457,7 @@ def get_enhanced_mock_status():
             
             # Check if weather data is available
             try:
-                conn = sqlite3.connect('parra_energy/data/energy_data.db')
+                conn = sqlite3.connect('data/energy_data.db')
                 cursor = conn.cursor()
                 cursor.execute("SELECT COUNT(*) FROM weather_daily WHERE date >= date('now')")
                 weather_count = cursor.fetchone()[0]
@@ -606,4 +605,12 @@ def test_scenario():
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+# Enhanced: Mode switching for dashboards
+@app.route('/switch_mode', methods=['POST'])
+def switch_mode():
+    current_mode = session.get('dashboard_mode', 'technical')
+    new_mode = 'elderly' if current_mode == 'technical' else 'technical'
+    session['dashboard_mode'] = new_mode
+    return jsonify({'mode': new_mode})
 
