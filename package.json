@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "parra-energy-turbo",
   "private": true,
   "scripts": {
     "build": "turbo run build",
