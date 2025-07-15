@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!--
+PARRA ENERGY - ELDERLY DASHBOARD TEMPLATE
+=========================================
+
+This template provides a simplified, elderly-friendly interface for the Parra Energy
+solar monitoring system. It's specifically designed for older users (like grandparents)
+who want easy-to-understand energy advice without technical complexity.
+
+ELDERLY-SPECIFIC DESIGN PRINCIPLES:
+1. SIMPLIFIED INTERFACE:
+   - Large fonts and clear typography (1.5rem base, 3rem headings)
+   - Minimal complexity with focus on actionable advice
+   - High contrast colors for better visibility
+   - Clear visual hierarchy and spacious layout
+
+2. CATALAN LANGUAGE INTERFACE:
+   - All text in Catalan for local elderly users in Spain
+   - Simple, everyday language avoiding technical jargon
+   - Cultural context appropriate for Spanish households
+   - Familiar energy concepts and terminology
+
+3. ACTIONABLE ADVICE FOCUS:
+   - Daily energy recommendations and tips
+   - Simple timing advice for appliances (when to use washing machine, etc.)
+   - Weather-based planning suggestions
+   - Clear guidance for energy savings
+
+4. MINIMAL COGNITIVE LOAD:
+   - Essential information only - no overwhelming details
+   - Clear visual feedback and status indicators
+   - Simple navigation with obvious controls
+   - Focus on "what should I do now" rather than complex metrics
+
+5. ACCESSIBILITY FEATURES:
+   - Large touch targets for mobile/tablet use
+   - High color contrast for better readability
+   - Simple toggle switch for mode switching
+   - Clear visual separation between sections
+
+6. PRACTICAL HOUSEHOLD INTEGRATION:
+   - Advice tailored for typical Spanish elderly household patterns
+   - Consideration of traditional cooking times and routines
+   - Safety and comfort prioritization over efficiency
+   - Family-friendly energy planning suggestions
+
+DUAL DASHBOARD INTEGRATION:
+- Top-right toggle switch to switch to technical mode
+- Session persistence for user preference
+- Seamless mode switching without data loss
+- Consistent styling with technical dashboard
+
+TEMPLATE STRUCTURE:
+- Current energy advice display
+- Daily tips and recommendations
+- Future planning suggestions (weather-based)
+- Usage comparison with normal patterns
+- Simple visual feedback on energy status
+
+This elderly dashboard ensures that all family members can benefit
+from solar energy optimization, regardless of their technical expertise.
+-->
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panell Solar Senzill per l'Avi ☀️</title>
+    
+    <!-- Tailwind CSS Framework for Responsive Design -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { font-size: 1.5rem; line-height: 1.5; }
+        h1 { font-size: 3rem; }
+        .tip { background-color: #e6f7ff; border: 2px solid #1890ff; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+        .warning { background-color: #fff7e6; border: 2px solid #faad14; }
+        .success { background-color: #f6ffed; border: 2px solid #52c41a; }
+        
+        /* Toggle Switch Styles */
+        .toggle-checkbox:checked + .toggle-slider {
+            background-color: #3b82f6; /* Blue-500 */
+        }
+        .toggle-checkbox:checked + .toggle-slider .toggle-thumb {
+            transform: translateX(1.5rem); /* 24px = w-6 */
+        }
+        .toggle-slider:hover {
+            background-color: #9ca3af; /* Gray-400 on hover */
+        }
+        .toggle-checkbox:checked + .toggle-slider:hover {
+            background-color: #2563eb; /* Blue-600 on hover when checked */
+        }
+        .toggle-checkbox:focus + .toggle-slider {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* Focus ring */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-center p-8">
+    <div class="relative">
+            <div class="absolute top-4 right-4 flex items-center space-x-3">
+        <span class="text-lg font-medium text-gray-700">Senzill</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="mode-toggle" class="sr-only toggle-checkbox" {% if mode == 'technical' %}checked{% endif %}>
+            <div class="toggle-slider w-12 h-6 bg-gray-300 rounded-full relative transition-colors duration-200 ease-in-out">
+                <div class="toggle-thumb absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full shadow transition-transform duration-200 ease-in-out"></div>
+            </div>
+        </label>
+        <span class="text-lg font-medium text-gray-700">Tècnic</span>
+    </div>
+
+        <h1 class="text-5xl font-bold mb-8">Panell Solar Senzill per l'Avi ☀️</h1>
+    </div>
+    
+    <div class="my-8">
+        <h2 class="text-2xl font-bold mb-4">Situació actual:</h2>
+        <div id="current-advice" class="tip text-xl"></div>
+    </div>
+    
+    <div class="my-8">
+        <h2 class="text-2xl font-bold mb-4">Consells per avui:</h2>
+        <div id="daily-tips" class="space-y-4"></div>
+    </div>
+    
+    <div class="my-8">
+        <h2 class="text-2xl font-bold mb-4">Per als propers dies:</h2>
+        <div id="future-tips" class="space-y-4"></div>
+    </div>
+    
+    <div class="my-8">
+        <h2 class="text-2xl font-bold mb-4">Comparació amb ús normal:</h2>
+        <div id="usage-comparison" class="tip text-xl"></div>
+    </div>
+    
+    <script>
+        function switchMode() {
+            fetch('/switch_mode', {method: 'POST'})
+                .then(() => location.reload());
+        }
+        
+        function updateDashboard() {
+            // Fetch current advice
+            fetch('/api/elderly/advice')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('current-advice').innerHTML = data.advice_context || data.basic_advice || 'Carregant...';
+                });
+            
+            // Fetch recommendations (daily tips)
+            fetch('/api/elderly/recommendations')
+                .then(res => res.json())
+                .then(data => {
+                    const tipsDiv = document.getElementById('daily-tips');
+                    tipsDiv.innerHTML = '';
+                    data.recommendations.forEach(tip => {
+                        const tipEl = document.createElement('div');
+                        tipEl.className = 'tip';
+                        tipEl.textContent = tip;
+                        tipsDiv.appendChild(tipEl);
+                    });
+                });
+            
+            // Fetch optimal timing (future tips)
+            fetch('/api/elderly/optimal-timing')
+                .then(res => res.json())
+                .then(data => {
+                    const futureDiv = document.getElementById('future-tips');
+                    futureDiv.innerHTML = '';
+                    const timing = data.optimal_timing || {};
+                    Object.entries(timing).forEach(([appliance, time]) => {
+                        const tipEl = document.createElement('div');
+                        tipEl.className = 'tip';
+                        tipEl.textContent = `${appliance}: Millor a les ${time}`;
+                        futureDiv.appendChild(tipEl);
+                    });
+                    if (data.weather_advice) {
+                        const weatherEl = document.createElement('div');
+                        weatherEl.className = 'warning';
+                        weatherEl.textContent = data.weather_advice;
+                        futureDiv.appendChild(weatherEl);
+                    }
+                });
+            
+            // Fetch historical for comparison
+            fetch('/api/analytics/historical?days=7')
+                .then(res => res.json())
+                .then(data => {
+                    const avgConsumption = data.summary.total_consumption / 7;
+                    document.getElementById('usage-comparison').textContent = `Avui has utilitzat aproximadament ${Math.round(avgConsumption)} kWh, similar al teu ús mitjà setmanal.`;
+                });
+        }
+        
+        setInterval(updateDashboard, 5000);
+        updateDashboard();
+
+        // Add event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('mode-toggle').addEventListener('change', switchMode);
+        });
+    </script>
+</body>
+</html> 

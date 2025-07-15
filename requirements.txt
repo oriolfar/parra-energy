@@ -1,5 +1,12 @@
-requests>=2.31.0  # For API calls
-flask>=3.0.0     # For web dashboard
-pytest>=7.4.0    # For testing
-python-dotenv>=1.0.0  # For environment variables
-paho-mqtt>=1.6.1  # For future MQTT device control
+requests>=2.31.0     # For API calls
+flask>=3.0.0        # For web dashboard
+pytest>=7.4.0       # For testing
+python-dotenv>=1.0.0 # For environment variables
+paho-mqtt>=1.6.1     # For future MQTT device control
+click>=8.1.0         # For CLI interface
+openmeteo-requests>=1.1.0 # For weather data
+pandas>=2.0.0        # For data processing
+requests-cache>=1.1.0 # For weather data caching
+retry-requests>=2.0.0 # For API retry logic
+numpy>=1.24.0        # For numerical calculations
+psutil>=5.9.0        # For system monitoring
