@@ -1,0 +1,11 @@
+{
+  "buildCommand": "cd ../.. && pnpm build --filter=web",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "framework": "nextjs",
+  "functions": {
+    "apps/web/app/api/**/*.ts": {
+      "runtime": "nodejs20.x"
+    }
+  }
+} 
