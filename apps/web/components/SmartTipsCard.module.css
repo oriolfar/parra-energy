@@ -1,0 +1,303 @@
+/* Smart Tips Card Styles */
+.smartTipsCard {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-width: 0;
+  max-height: 100%;
+}
+
+.smartTipsCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.smartTipsTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  word-break: break-word;
+  flex-shrink: 0;
+}
+
+.tipsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  min-height: 0;
+}
+
+.tipCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.tipCard:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.tipCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.tip-high {
+  border-left: 4px solid #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.tip-medium {
+  border-left: 4px solid #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.tip-low {
+  border-left: 4px solid #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.tipHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.tipIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.tipTypeIcon {
+  font-size: 1rem;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.tipPriority {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.tipContent {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+.tipTitle {
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.3;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  word-break: break-word;
+}
+
+.tipMessage {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.tipAction {
+  color: #60a5fa;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-style: italic;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(96, 165, 250, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  transition: all 0.2s ease;
+}
+
+.tipAction:hover {
+  background: rgba(96, 165, 250, 0.2);
+  transform: translateX(2px);
+}
+
+.actionIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.noTips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+/* Scrollbar styling */
+.tipsContainer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tipsContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.tipsContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.tipsContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Enhanced responsive styles */
+@media (max-width: 768px) {
+  .smartTipsCard {
+    padding: 1rem;
+  }
+  
+  .tipsContainer {
+    gap: 0.5rem;
+  }
+  
+  .tipCard {
+    padding: 0.8rem;
+    gap: 0.6rem;
+  }
+  
+  .tipHeader {
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .tipIcon {
+    font-size: 1.3rem;
+  }
+  
+  .tipTypeIcon {
+    font-size: 0.9rem;
+  }
+  
+  .tipPriority {
+    font-size: 0.55rem;
+    padding: 1px 4px;
+  }
+  
+  .tipTitle {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .tipMessage {
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .tipAction {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+    gap: 0.4rem;
+  }
+  
+  .actionIcon {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tipCard {
+    padding: 0.6rem;
+    gap: 0.5rem;
+  }
+  
+  .tipHeader {
+    gap: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .tipIcon {
+    font-size: 1.2rem;
+  }
+  
+  .tipTypeIcon {
+    font-size: 0.8rem;
+  }
+  
+  .tipPriority {
+    font-size: 0.5rem;
+    padding: 1px 3px;
+  }
+  
+  .tipTitle {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .tipMessage {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tipAction {
+    font-size: 0.75rem;
+    padding: 0.3rem;
+    gap: 0.3rem;
+  }
+  
+  .actionIcon {
+    font-size: 0.8rem;
+  }
+} 

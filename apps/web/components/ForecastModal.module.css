@@ -1,0 +1,838 @@
+/* Forecast Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.modalContent {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 95vw;
+  max-height: 95vh;
+  width: 1200px;
+  height: 800px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navigationControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 20px;
+}
+
+.navButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.navButton:hover:not(.navButtonDisabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.navButtonDisabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.navButtonDisabled:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: none;
+}
+
+.miniCardNavigation {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0 20px;
+}
+
+.miniCard {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  min-width: 50px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.miniCard:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.miniCardActive {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+  color: #22c55e;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.miniCardToday {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.miniCardToday.miniCardActive {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.miniCardDate {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.todayLabel {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #fbbf24;
+  color: #1f2937;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 4px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.dayIndicator {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 4px;
+  align-self: flex-start;
+  min-width: 50px;
+  text-align: center;
+}
+
+.headerInfo {
+  flex: 1;
+}
+
+.modalTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 8px 0;
+  text-transform: capitalize;
+}
+
+.weatherSummary {
+  font-size: 1.1rem;
+  color: #d1d5db;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.weatherIcon {
+  font-size: 2.5rem;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.weatherFactor {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.modalBody {
+  padding: 1rem 2rem 2rem 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 1rem 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Production Overview */
+.productionOverview {
+  display: flex;
+  gap: 16px;
+  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.overviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.overviewCard {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.overviewCard:hover {
+  transform: translateY(-2px);
+}
+
+.overviewValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #22c55e;
+  margin-bottom: 8px;
+}
+
+.overviewLabel {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Timeline Section */
+.timelineSection {
+  flex: 1;
+  padding: 24px 32px;
+  overflow: hidden;
+}
+
+.timelineTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 20px 0;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* Hourly Timeline */
+.hourlyTimeline {
+  display: grid;
+  grid-template-columns: repeat(19, 1fr);
+  gap: 6px;
+  height: 100%;
+  align-items: end;
+}
+
+.timelineContainer {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+}
+
+.timelineHour {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.75rem;
+  transition: all 0.3s ease;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.timelineHour:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.productionHour {
+  border-width: 2px;
+}
+
+.hourHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.hourTime {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9ca3af;
+  margin-bottom: 2px;
+}
+
+.hourIcon {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.hourWeather {
+  font-size: 1.2rem;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.hourDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.hourMetric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.metricValue {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+}
+
+.metricLabel {
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.qualityBadge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-bottom: 3px;
+  text-align: center;
+  min-width: 45px;
+  letter-spacing: 0.3px;
+}
+
+.nightHour {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nightLabel {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hourCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-height: 200px;
+  max-width: 50px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: help;
+}
+
+.hourCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.02);
+}
+
+/* New tooltip styles */
+.tooltip {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  white-space: pre-line;
+  z-index: 9999;
+  min-width: 140px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Side Navigation Arrows */
+.sideArrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1001;
+}
+
+.sideArrow:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.leftArrow {
+  left: calc(50% - 650px);
+}
+
+.rightArrow {
+  right: calc(50% - 650px);
+}
+
+.hourFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.hourTip {
+  font-size: 0.55rem;
+  color: #9ca3af;
+  text-align: center;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productionBar {
+  flex: 1;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  min-height: 80px;
+  display: flex;
+  align-items: end;
+}
+
+.productionFill {
+  width: 100%;
+  border-radius: 8px;
+  transition: all 0.5s ease;
+  position: relative;
+}
+
+.productionFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 8px;
+}
+
+/* Optimal Section */
+.optimalSection {
+  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.optimalTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 16px 0;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* Optimal Windows */
+.optimalWindows {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.windowsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.windowCard {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.windowCard:hover {
+  background: rgba(34, 197, 94, 0.3);
+  transform: translateX(5px);
+}
+
+.windowTime {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.windowDescription {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.optimalWindow {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: center;
+  min-width: 200px;
+  transition: all 0.3s ease;
+}
+
+.optimalWindow:hover {
+  background: rgba(34, 197, 94, 0.15);
+  transform: translateY(-2px);
+}
+
+.optimalTime {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #22c55e;
+  margin-bottom: 8px;
+}
+
+.optimalDescription {
+  font-size: 0.9rem;
+  color: #d1d5db;
+  line-height: 1.4;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .modalContent {
+    width: 95vw;
+    height: 90vh;
+  }
+  
+  .modalHeader {
+    padding: 16px 20px;
+  }
+  
+  .modalBody {
+    padding: 1rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.5rem;
+  }
+  
+  .timelineContainer {
+    grid-template-columns: repeat(6, 1fr);
+    max-height: 300px;
+  }
+  
+  .overviewGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hourlyTimeline {
+    grid-template-columns: repeat(10, 1fr);
+  }
+  
+  .hourCard {
+    min-height: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    width: 98vw;
+    height: 95vh;
+    border-radius: 12px;
+  }
+  
+  .modalHeader {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .miniCardNavigation {
+    order: 2;
+    margin: 8px 0;
+    gap: 6px;
+  }
+
+  .miniCard {
+    padding: 6px 8px;
+    font-size: 0.7rem;
+    min-width: 40px;
+  }
+
+  .todayLabel {
+    font-size: 0.5rem;
+    padding: 1px 3px;
+    top: -6px;
+    right: -6px;
+  }
+
+  .navigationControls {
+    margin: 0;
+    order: 3;
+  }
+
+  .headerInfo {
+    order: 1;
+    text-align: center;
+  }
+
+  .closeButton {
+    order: 4;
+    align-self: flex-end;
+  }
+
+  /* Hide side arrows on mobile - use swipe instead */
+  .sideArrow {
+    display: none;
+  }
+  
+  .modalTitle {
+    font-size: 1.5rem;
+  }
+  
+  .productionOverview {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .overviewCard {
+    padding: 16px;
+  }
+  
+  .overviewValue {
+    font-size: 1.5rem;
+  }
+  
+  .timelineSection {
+    padding: 16px 20px;
+  }
+  
+  .hourlyTimeline {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  
+  .hourCard {
+    min-height: 120px;
+    padding: 6px;
+  }
+  
+  .hourTime {
+    font-size: 0.7rem;
+  }
+  
+  .hourIcon {
+    font-size: 1rem;
+  }
+  
+  .qualityBadge {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+  }
+  
+  .hourTip {
+    font-size: 0.6rem;
+  }
+  
+  .optimalSection {
+    padding: 16px 20px;
+  }
+  
+  .optimalWindows {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .optimalWindow {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timelineContainer {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .timelineHour {
+    min-height: 100px;
+    padding: 0.5rem;
+  }
+  
+  .hourDetails {
+    gap: 0.2rem;
+  }
+  
+  .metricValue {
+    font-size: 0.7rem;
+  }
+  
+  .metricLabel {
+    font-size: 0.5rem;
+  }
+  
+  .hourlyTimeline {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .hourCard {
+    min-height: 100px;
+  }
+  
+  .hourTime {
+    font-size: 0.6rem;
+  }
+  
+  .hourIcon {
+    font-size: 0.9rem;
+  }
+  
+  .qualityBadge {
+    font-size: 0.5rem;
+    padding: 2px 4px;
+  }
+  
+  .hourTip {
+    font-size: 0.55rem;
+  }
+} 

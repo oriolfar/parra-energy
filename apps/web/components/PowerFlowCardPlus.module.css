@@ -1,0 +1,445 @@
+/* PowerFlowCardPlus - Futuristic Glass Energy Flow Visualization */
+
+.powerFlowContainer {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  max-width: 500px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  box-sizing: border-box;
+  min-width: 0;
+  max-height: 100%;
+}
+
+.powerFlowContainer.selling {
+  background: linear-gradient(135deg, #22c55e 0%, #bbf7d0 100%);
+  box-shadow: 0 0 40px 0 #22c55e44;
+}
+
+.powerFlowContainer.solarOnly {
+  background: linear-gradient(135deg, #ffd700 0%, #fffbe6 100%);
+  box-shadow: 0 0 40px 0 #ffd70044;
+}
+
+.powerFlowContainer.mix {
+  background: linear-gradient(135deg, #f59e42 0%, #fff3e0 100%);
+  box-shadow: 0 0 40px 0 #f59e4244;
+}
+
+.powerFlowContainer.gridOnly {
+  background: linear-gradient(135deg, #ef4444 0%, #fee2e2 100%);
+  box-shadow: 0 0 40px 0 #ef444444;
+}
+
+.flowSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.nodeContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+/* Energy Node Base Styles - Enhanced Glassmorphism */
+.energyNode {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
+  /* Enhanced glass effect */
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
+
+/* Hover effects removed as requested */
+
+/* Solar Node - Top Center - Yellow theme */
+.solarNode {
+  top: calc(20% - 45px);
+  left: calc(50% - 45px);
+  background: rgba(255, 215, 0, 0.08);
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  position: absolute;
+}
+
+.solarNode::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.4) 0%,
+    rgba(255, 193, 7, 0.2) 100%
+  );
+  z-index: -1;
+}
+
+/* Grid Node - Positioned with more spacing */
+.gridNode {
+  top: calc(65% - 45px);
+  left: calc(15% - 45px);
+  background: rgba(255, 107, 107, 0.08);
+  border: 2px solid rgba(255, 107, 107, 0.4);
+  position: absolute;
+}
+
+/* Grid Node States */
+.gridSelling {
+  background: rgba(34, 197, 94, 0.08) !important;
+  border-color: rgba(34, 197, 94, 0.4) !important;
+}
+
+.gridBuying {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+.gridNode::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.4) 0%,
+    rgba(255, 165, 0, 0.2) 100%
+  );
+  z-index: -1;
+}
+
+.gridSelling::after {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.4) 0%,
+    rgba(16, 185, 129, 0.2) 100%
+  ) !important;
+}
+
+.gridBuying::after {
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.4) 0%,
+    rgba(220, 38, 38, 0.2) 100%
+  ) !important;
+}
+
+/* Home Node - Blue theme */
+.homeNode {
+  top: calc(65% - 45px);
+  left: calc(85% - 45px);
+  background: rgba(74, 158, 255, 0.08);
+  border: 2px solid rgba(74, 158, 255, 0.4);
+  position: absolute;
+}
+
+.homeNode::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(74, 158, 255, 0.4) 0%,
+    rgba(59, 130, 246, 0.2) 100%
+  );
+  z-index: -1;
+}
+
+
+
+/* Node Content - Enhanced for Glassmorphism */
+.nodeIcon {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+  z-index: 3;
+  position: relative;
+}
+
+.nodeValue {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 10px rgba(255, 255, 255, 0.2);
+  line-height: 1.2;
+  margin-bottom: 0.1rem;
+  z-index: 3;
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 6px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.nodeLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 8px rgba(255, 255, 255, 0.1);
+  z-index: 3;
+  position: relative;
+}
+
+/* Flow Paths - Geometric style like reference */
+.flowPath {
+  fill: none;
+  stroke-width: 3;
+  opacity: 0.6;
+}
+
+.flowPath.solar {
+  stroke: #ffd700; /* Yellow for solar flows */
+}
+
+.flowPath.solarToGrid {
+  stroke: #22c55e; /* Green when selling to grid */
+}
+
+.flowPath.grid {
+  stroke: #ef4444; /* Red for buying from grid */
+}
+
+/* Flow Dots - Enhanced visibility like reference */
+.flowDot {
+  opacity: 0.9;
+  stroke-width: 0.5;
+  stroke: rgba(255, 255, 255, 0.6);
+}
+
+.flowDot.solar {
+  fill: #ffd700; /* Yellow for solar flows */
+  filter: drop-shadow(0 0 4px #ffd700);
+}
+
+.flowDot.solarToGrid {
+  fill: #ffd700; /* Yellow for solar flows */
+  filter: drop-shadow(0 0 4px#ffd700);
+}
+
+.flowDot.grid {
+  fill: #ffd700; /* Red for buying from grid */
+  filter: drop-shadow(0 0 4px#ffd700);
+}
+
+/* Node Percentage Circles (like the library) */
+.nodeCircleSections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Solar distribution circles - Enhanced Glassmorphism */
+.solarCircle {
+  fill: none;
+  stroke-width: 5;
+  transition: stroke-dashoffset 0.4s, stroke-dasharray 0.4s;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  opacity: 0.9;
+}
+
+.solarToHome {
+  stroke: rgba(255, 215, 0, 0.8); /* Yellow for solar flows */
+}
+
+.solarToGrid {
+  stroke: rgba(34, 197, 94, 0.8); /* Green when selling to grid */
+}
+
+/* Home sources circles - Enhanced Glassmorphism */
+.homeCircle {
+  fill: none;
+  stroke-width: 5;
+  transition: stroke-dashoffset 0.4s, stroke-dasharray 0.4s;
+  animation: rotate-in 0.6s ease-in;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  opacity: 0.9;
+}
+
+.homeSolar {
+  stroke: rgba(255, 215, 0, 0.8); /* Yellow for solar input */
+}
+
+.homeGrid {
+  stroke: rgba(239, 68, 68, 0.8); /* Red for grid input */
+}
+
+/* Animation for home circles (like the library) */
+@keyframes rotate-in {
+  from {
+    stroke-dashoffset: 238.76104;
+    stroke-dasharray: 238.76104;
+  }
+}
+
+.flowLabel {
+  font-size: 0.75rem;
+  font-weight: 800;
+  fill: #ffffff;
+  text-anchor: middle;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 8px rgba(255, 255, 255, 0.3);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .powerFlowContainer {
+    height: 280px;
+    padding: 15px;
+  }
+
+  .energyNode {
+    width: 80px;
+    height: 80px;
+  }
+
+  .nodeIcon {
+    font-size: 1.8rem;
+  }
+
+  .nodeValue {
+    font-size: 0.75rem;
+  }
+
+  .nodeLabel {
+    font-size: 0.65rem;
+  }
+
+  .flowLabel {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .powerFlowContainer {
+    height: 250px;
+    padding: 10px;
+  }
+
+  .energyNode {
+    width: 70px;
+    height: 70px;
+  }
+
+  .nodeIcon {
+    font-size: 1.5rem;
+  }
+
+  .nodeValue {
+    font-size: 0.7rem;
+  }
+
+  .nodeLabel {
+    font-size: 0.6rem;
+  }
+
+  .flowLabel {
+    font-size: 0.6rem;
+  }
+
+  /* Adjust positioning for smaller screens - maintain coordinate alignment */
+  .solarNode {
+    top: calc(20% - 35px);
+    left: calc(50% - 35px);
+  }
+
+  .gridNode {
+    top: calc(65% - 35px);
+    left: calc(15% - 35px);
+  }
+
+  .homeNode {
+    top: calc(65% - 35px);
+    left: calc(85% - 35px);
+  }
+}
+
+/* Accessibility and Elder-Friendly Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  .energyNode {
+    transition: none;
+  }
+  
+  /* Hide moving dots for accessibility, show static indicators */
+  .flowDot {
+    display: none;
+  }
+  
+  .flowPath {
+    opacity: 1;
+    stroke-dasharray: 5,5;
+    animation: dash 1s linear infinite;
+  }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .energyNode {
+    border-width: 3px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #000000;
+  }
+  
+  .nodeValue, .nodeLabel {
+    color: #000000;
+    text-shadow: none;
+  }
+  
+  .flowLabel {
+    fill: #000000;
+    text-shadow: none;
+  }
+} 

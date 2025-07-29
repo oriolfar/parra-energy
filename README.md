@@ -1,135 +1,193 @@
-# Turborepo starter
+# 🌞 Parra Energy Turbo - Solar Energy Dashboard
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern, elder-friendly solar energy monitoring dashboard built with Next.js, TypeScript, and Turborepo. Features real-time energy flow visualization, weather integration, and smart energy tips.
 
-## Using this example
+## ✨ Features
 
-Run the following command:
+- **Real-time Energy Monitoring**: Live solar production, consumption, and grid interaction
+- **Weather Integration**: Current weather data with solar production forecasting
+- **Smart Energy Tips**: AI-powered recommendations for optimal energy usage
+- **Elder-Friendly UI**: Large, clear interface with high contrast and simple navigation
+- **Multi-language Support**: Catalan and English
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
+- **Glass-morphism Design**: Modern, futuristic UI with transparency effects
 
-```sh
-npx create-turbo@latest
-```
+## 🏗️ Architecture
 
-## What's inside?
+This is a monorepo built with Turborepo containing:
 
-This Turborepo includes the following packages/apps:
+- **`apps/web`**: Next.js frontend application
+- **`apps/api`**: Backend API services
+- **`packages/types`**: Shared TypeScript types
+- **`packages/ui`**: Reusable UI components
+- **`packages/config`**: Shared configuration
 
-### Apps and Packages
+## 🚀 Quick Start
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Prerequisites
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- Node.js 18+ 
+- pnpm (recommended) or npm
+- Git
 
-### Utilities
+### Installation
 
-This Turborepo has some additional tools already setup for you:
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd parra-energy-turbo
+   ```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
 
-### Build
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Edit `.env.local` with your configuration:
+   ```env
+   # API Configuration
+   API_BASE_URL=http://localhost:3002
+   
+   # Weather API (OpenWeatherMap)
+   OPENWEATHER_API_KEY=your_api_key_here
+   
+   # Fronius Solar Inverter
+   FRONIUS_HOST=your_inverter_ip
+   FRONIUS_PORT=80
+   ```
 
-To build all apps and packages, run the following command:
+4. **Start development servers**
+   ```bash
+   # Start all services
+   pnpm dev
+   
+   # Or start individually
+   pnpm dev:web    # Frontend (http://localhost:3000)
+   pnpm dev:api    # Backend (http://localhost:3002)
+   ```
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 📁 Project Structure
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+parra-energy-turbo/
+├── apps/
+│   ├── web/                 # Next.js frontend
+│   │   ├── app/            # App router pages
+│   │   ├── components/     # React components
+│   │   └── utils/          # Utility functions
+│   └── api/                # Backend API
+│       ├── app/            # API routes
+│       └── services/       # Business logic
+├── packages/
+│   ├── types/              # Shared TypeScript types
+│   ├── ui/                 # Reusable UI components
+│   └── config/             # Shared configuration
+└── check_flow_component/   # Power flow visualization component
 ```
 
-### Remote Caching
+## 🛠️ Development
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Available Scripts
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+```bash
+# Development
+pnpm dev              # Start all services
+pnpm dev:web          # Start frontend only
+pnpm dev:api          # Start backend only
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+# Building
+pnpm build            # Build all packages
+pnpm build:web        # Build frontend
+pnpm build:api        # Build backend
 
-```
-cd my-turborepo
+# Testing
+pnpm test             # Run all tests
+pnpm test:web         # Test frontend
+pnpm test:api         # Test backend
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+# Linting
+pnpm lint             # Lint all packages
+pnpm lint:fix         # Fix linting issues
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+# Type checking
+pnpm type-check       # Check TypeScript types
 ```
 
-## Useful Links
+### Code Style
 
-Learn more about the power of Turborepo:
+This project uses:
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **TypeScript** for type safety
+- **Husky** for git hooks
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+## 🌐 Deployment
+
+### Vercel (Recommended)
+
+1. **Connect your GitHub repository to Vercel**
+2. **Set environment variables** in Vercel dashboard
+3. **Deploy automatically** on push to main branch
+
+### Manual Deployment
+
+1. **Build the project**
+   ```bash
+   pnpm build
+   ```
+
+2. **Start production server**
+   ```bash
+   pnpm start
+   ```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `API_BASE_URL` | Backend API URL | Yes |
+| `OPENWEATHER_API_KEY` | OpenWeatherMap API key | Yes |
+| `FRONIUS_HOST` | Fronius inverter IP | No |
+| `FRONIUS_PORT` | Fronius inverter port | No |
+
+### API Endpoints
+
+- `GET /api/energy/current` - Current energy data
+- `GET /api/weather/current` - Current weather data
+- `GET /api/weather/forecast` - Weather forecast
+- `GET /api/energy/tips` - Smart energy tips
+- `GET /api/fronius/status` - Inverter status
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Fronius** for solar inverter integration
+- **OpenWeatherMap** for weather data
+- **Next.js** for the amazing framework
+- **Turborepo** for monorepo management
+
+## 📞 Support
+
+For support, email support@parra-energy.com or create an issue in this repository.
+
+---
+
+**Built with ❤️ for sustainable energy monitoring**
