@@ -1,20 +1,66 @@
 {
   "name": "parra-energy-turbo",
+  "version": "1.0.0",
+  "description": "A modern, elder-friendly solar energy monitoring dashboard built with Next.js, TypeScript, and Turborepo",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:api": "turbo run dev --filter=api",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "lint:fix": "turbo run lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "test:web": "turbo run test --filter=web",
+    "test:api": "turbo run test --filter=api",
+    "clean": "turbo run clean",
+    "start": "turbo run start",
+    "start:web": "turbo run start --filter=web",
+    "start:api": "turbo run start --filter=api",
+    "prepare": "husky install"
   },
+  "keywords": [
+    "solar-energy",
+    "dashboard",
+    "nextjs",
+    "typescript",
+    "turborepo",
+    "elder-friendly",
+    "energy-monitoring",
+    "weather-integration"
+  ],
+  "author": "Parra Energy Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/parra-energy-turbo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/parra-energy-turbo/issues"
+  },
+  "homepage": "https://github.com/yourusername/parra-energy-turbo#readme",
   "devDependencies": {
     "prettier": "^3.6.2",
     "turbo": "^2.5.4",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=18",
+    "pnpm": ">=9.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json}": [
+      "prettier --write"
+    ]
   }
 }
